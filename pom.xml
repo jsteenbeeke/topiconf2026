@@ -21,6 +21,12 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit</artifactId>
+				<version>1.4.2</version>
+			</dependency>
+
+			<dependency>
 				<groupId>jakarta.enterprise</groupId>
 				<artifactId>jakarta.enterprise.cdi-api</artifactId>
 				<version>4.1.0</version>
@@ -118,6 +124,12 @@
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>

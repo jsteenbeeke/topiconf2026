@@ -19,7 +19,7 @@ public abstract class DependencyInjector {
 
 	@NotNull
 	@SuppressWarnings("unchecked")
-	public final <T> T getBean(Class<T> clazz) {
+	public final <T> T getBean(@NotNull Class<T> clazz) {
 		if (!beans.containsKey(clazz)) {
 			throw new IllegalArgumentException("Bean not found for class: " + clazz.getName());
 		}

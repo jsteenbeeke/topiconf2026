@@ -54,7 +54,8 @@ public class ProxyPoweredInjector extends DependencyInjector {
 		registerBean(beanClass, objenesis.newInstance(createProxyClass(byteBuddy, beanClass)));
 	}
 
-	private <T> Class<? extends T> createProxyClass(ByteBuddy byteBuddy, Class<T> serviceClass) {
+	@NotNull
+	private <T> Class<? extends T> createProxyClass(@NotNull ByteBuddy byteBuddy, @NotNull Class<T> serviceClass) {
 		try (DynamicType.Unloaded<T> make =
 					 byteBuddy.subclass(serviceClass, ConstructorStrategy.Default.NO_CONSTRUCTORS)
 							 .method(not(isDeclaredBy(Object.class)))
@@ -75,7 +76,8 @@ public class ProxyPoweredInjector extends DependencyInjector {
 		return new BeanCallInterceptor(() -> initalizeBean(serviceClass));
 	}
 
-	private Object initalizeBean(Class<?> serviceClass) {
+	@NotNull
+	private Object initalizeBean(@NotNull Class<?> serviceClass) {
 		Constructor<?> injectionConstructor = findInjectionConstructor(serviceClass);
 
 		Object[] invocationParameters = new Object[injectionConstructor.getParameterCount()];
@@ -96,7 +98,8 @@ public class ProxyPoweredInjector extends DependencyInjector {
 		}
 	}
 
-	public Constructor<?> findInjectionConstructor(Class<?> serviceClass) {
+	@NotNull
+	public Constructor<?> findInjectionConstructor(@NotNull Class<?> serviceClass) {
 		Set<Constructor<?>> annotatedConstructors = Arrays.stream(serviceClass.getConstructors())
 				.filter(constructor -> constructor.isAnnotationPresent(Inject.class))
 				.collect(Collectors.toSet());
@@ -119,7 +122,7 @@ public class ProxyPoweredInjector extends DependencyInjector {
 		}
 	}
 
-	public void injectDependencies(Object target, Map<Class<?>, Object> services)
+	public void injectDependencies(@NotNull Object target, @NotNull Map<Class<?>, Object> services)
 			throws IllegalAccessException {
 
 		Class<?> targetClass = target.getClass();

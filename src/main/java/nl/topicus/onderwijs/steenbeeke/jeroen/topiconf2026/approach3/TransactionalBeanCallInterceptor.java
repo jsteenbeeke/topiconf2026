@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +24,15 @@ public class TransactionalBeanCallInterceptor {
 
 	private final Supplier<Object> lazyInitializer;
 
-	public TransactionalBeanCallInterceptor(Supplier<Object> lazyInitializer) {
+	public TransactionalBeanCallInterceptor(@NotNull Supplier<Object> lazyInitializer) {
 		this.lazyInitializer = lazyInitializer;
 	}
 
 	private volatile Object target;
 
+	@Nullable
 	@RuntimeType
-	public Object intercept(@Origin Method method, @AllArguments Object[] args) throws Throwable {
+	public Object intercept(@NotNull @Origin Method method, @NotNull @AllArguments Object[] args) throws Throwable {
 		if (target == null) {
 			synchronized (this) {
 				if (target == null) {
@@ -45,7 +48,8 @@ public class TransactionalBeanCallInterceptor {
 		}
 	}
 
-	private Object runInTransaction(ThrowableSupplier<Object> supplier) throws Throwable {
+	@Nullable
+	private Object runInTransaction(@NotNull ThrowableSupplier<Object> supplier) throws Throwable {
 		boolean commit = false;
 		try {
 			commit = startTransaction();
@@ -75,6 +79,7 @@ public class TransactionalBeanCallInterceptor {
 
 	@FunctionalInterface
 	private interface ThrowableSupplier<T> {
+		@Nullable
 		T get() throws Throwable;
 	}
 

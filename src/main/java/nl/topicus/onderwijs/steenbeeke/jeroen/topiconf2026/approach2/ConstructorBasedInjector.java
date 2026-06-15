@@ -57,7 +57,7 @@ public class ConstructorBasedInjector extends DependencyInjector {
 		}
 	}
 
-	private void instantiateServices(Map<Class<?>, Set<Class<?>>> serviceDependencies) {
+	private void instantiateServices(@NotNull Map<Class<?>, Set<Class<?>>> serviceDependencies) {
 		for (var serviceAndDependencies : serviceDependencies.entrySet()) {
 			Class<?> serviceClass = serviceAndDependencies.getKey();
 			Set<Class<?>> dependencies = serviceAndDependencies.getValue();
@@ -137,8 +137,9 @@ public class ConstructorBasedInjector extends DependencyInjector {
 		}
 	}
 
+	@NotNull
 	private String
-	describeUnresolvedDependencies(Map<Class<?>, Set<Class<?>>> serviceDependencies) {
+	describeUnresolvedDependencies(@NotNull Map<Class<?>, Set<Class<?>>> serviceDependencies) {
 		return serviceDependencies.keySet()
 				.stream()
 				.filter(serviceClass -> !getBeans().containsKey(serviceClass))
